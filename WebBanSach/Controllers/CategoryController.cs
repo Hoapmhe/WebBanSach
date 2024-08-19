@@ -65,5 +65,34 @@ namespace WebBanSach.Controllers
             }
             return View();
         }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Category obj)
+        {
+            if (obj == null)
+            {
+                return NotFound();
+            }else
+            {
+                _context.Categories.Remove(obj);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            
+        }
     }
 }
