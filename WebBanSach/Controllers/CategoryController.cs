@@ -31,6 +31,7 @@ namespace WebBanSach.Controllers
             if (ModelState.IsValid) { 
                 _context.Categories.Add(obj);
                 _context.SaveChanges();
+                TempData["Sucess"]= "Create category sucessesfull";
                 return RedirectToAction("Index");
             }
             return View();
@@ -61,6 +62,7 @@ namespace WebBanSach.Controllers
             {
                 _context.Categories.Update(obj);
                 _context.SaveChanges();
+                TempData["Sucess"] = "Update category sucessesfull";
                 return RedirectToAction("Index");
             }
             return View();
@@ -90,6 +92,7 @@ namespace WebBanSach.Controllers
             {
                 _context.Categories.Remove(obj);
                 _context.SaveChanges();
+                TempData["Sucess"] = "Delete category sucessesfull";
                 return RedirectToAction("Index");
             }
             
