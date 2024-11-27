@@ -1,19 +1,20 @@
 ﻿using BanSach.DataAccess.Repository;
 using Microsoft.AspNetCore.Mvc;
 using BanSach.Models;
+using BanSach.DataAccess.Repository.IRepository;
 
 namespace WebBanSach.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _context;
-        public CategoryController(ICategoryRepository context)
+        private readonly IUnitOfWork _context;
+        public CategoryController(IUnitOfWork context)
         {
             _context = context;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList = _context.GetAll().ToList();
+            IEnumerable<Category> objCategoryList = _context.Category.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -29,7 +30,7 @@ namespace WebBanSach.Controllers
                 ModelState.AddModelError("CustomError", "The name must not same display order");
             }
             if (ModelState.IsValid) { 
-                _context.Add(obj);
+                _context.Category.Add(obj);
                 _context.Save();
                 TempData["Sucess"]= "Create category sucessesfull";
                 return RedirectToAction("Index");
@@ -43,7 +44,7 @@ namespace WebBanSach.Controllers
             {
                 return NotFound();
             }
-            var category = _context.GetItem(c => c.Id == id);
+            var category = _context.Category.GetItem(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -60,7 +61,7 @@ namespace WebBanSach.Controllers
             }
             if (ModelState.IsValid)
             {
-                _context.Update(obj);
+                _context.Category.Update(obj);
                 _context.Save();
                 TempData["Sucess"] = "Update category sucessesfull";
                 return RedirectToAction("Index");
@@ -74,7 +75,7 @@ namespace WebBanSach.Controllers
             {
                 return NotFound();
             }
-            var category = _context.GetItem(c => c.Id == id);
+            var category = _context.Category.GetItem(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -90,7 +91,7 @@ namespace WebBanSach.Controllers
                 return NotFound();
             }else
             {
-                _context.Delete(obj);
+                _context.Category.Delete(obj);
                 _context.Save();
                 TempData["Sucess"] = "Delete category sucessesfull";
                 return RedirectToAction("Index");
